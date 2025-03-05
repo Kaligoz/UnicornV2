@@ -6,7 +6,7 @@ const router = express.Router();
 // add a provider
 
 router.post("/", async (req, res) => {
-    const { name, country, marketShare, renewableEnergyPercent, yearlyRevenue } = req.body;
+    const { name, country, marketShare, renewablePercentage, yearlyRevenue } = req.body;
 
     if (!name) {
         return res.status(400).json({ message: "Name is required" });
@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
         name,
         country,
         marketShare,
-        renewableEnergyPercent,
+        renewablePercentage,
         yearlyRevenue
     });
 
