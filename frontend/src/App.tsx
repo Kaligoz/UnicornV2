@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import ProviderList from "./pages/ProviderList";
-import ProviderForm from "./pages/ProviderForm";
+import ProviderFormAdd from "./pages/ProviderFormAdd";
+import ProviderFormEdit from "./pages/ProviderFormEdit";
 
 function App() {
   return (
@@ -9,22 +9,13 @@ function App() {
       <div className="p-6 overflow-auto h-screen">
         <Routes>
           <Route path="/" element={<ProviderList />} />
-          <Route path="/add" element={<ProviderForm />} />
+          <Route path="/add" element={<ProviderFormAdd />} />
+          <Route path="/edit/:id" element={<ProviderFormEdit />} />
         </Routes>
       </div>
-      <AddButton/>
     </Router>
   );
 };
 
-function AddButton() {
-  const navigate = useNavigate();
-
-  return (
-    <div className="fixed bottom-6 right-6">
-      <Button variant={"outline"} onClick={() => navigate("/add")}>Add</Button>
-    </div>
-  );
-};
 
 export default App;

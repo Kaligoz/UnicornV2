@@ -1,9 +1,14 @@
+import { Button } from "@/components/ui/button";
+import { EnergyPieChart, MarketPieChart } from "@/components/ui/pieCharts"
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getProviders, deleteProvider } from "../services/api";
 import { ElectricityProvider } from "../type/ElectricityProvider";
 
 const ProviderList = () => {
   const [providers, setProviders] = useState<ElectricityProvider[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProviders();
@@ -21,7 +26,19 @@ const ProviderList = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Electricity Providers</h1>
+      <div>
+        <h1 className="text-2xl font-bold mb-4">Electricity Providers</h1>
+        <div className="gap-4 flex">
+          <Button variant={"outline"} onClick={() => navigate("/add")} className="mb-4">Add</Button>
+          <Button variant={"outline"} onClick={() => navigate("/search")}>Search</Button>
+
+        <div className="ml-auto flex gap-4">
+            <Button variant={"outline"} onClick={() => navigate("/login")} className="mb-4">Login</Button>
+            <Button variant={"secondary"} onClick={() => navigate("/register")} className="mb-4">Register</Button>
+        </div>
+</div>
+
+      </div>
       <ul className="space-y-2">
         {providers.map((provider) => (
           <li key={provider._id} className="border p-4 rounded flex justify-between">
@@ -32,12 +49,25 @@ const ProviderList = () => {
               <p>Renewable: {provider.renewablePercentage}%</p>
               <p>Revenue: €{provider.yearlyRevenue}</p>
             </div>
-            <button
-              onClick={() => handleDelete(provider._id!)}
-              className="bg-red-500 text-white px-3 py-1 rounded"
-            >
-              Delete
-            </button>
+            <div className="flex gap-4">
+              <EnergyPieChart renewableEnergyPercent={provider.renewablePercentage} />
+              <MarketPieChart marketShare={provider.marketShare} />
+            </div>
+            <div className="flex gap-4">
+              <Button
+                onClick={() => handleDelete(provider._id!)}
+                variant={"destructive"}
+              >
+                Delete
+              </Button>
+              <Button 
+                variant={"outline"} 
+                onClick={() => navigate(`/edit/${provider._id}`)} 
+                className="mb-4"
+              >
+                Edit
+              </Button>
+            </div>
           </li>
         ))}
       </ul>
