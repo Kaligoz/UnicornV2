@@ -1,9 +1,8 @@
-
 function App() {
 
   return (
     <>
-      <p className="">hello</p>    
+      <p>hello</p>
     </>
   )
 }
