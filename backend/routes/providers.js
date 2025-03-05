@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
     try {
         const savedProvider = await newProvider.save();
         res.status(201).json(savedProvider)
-    } catch (err) {
+    } catch (error) {
         res.status(400).json({ error: "Invalid data" });
     }
 });
@@ -40,31 +40,43 @@ router.delete("/:id", async (req, res) => {
 });
 
 // get all providers
-
 router.get("/", async (req, res) => {
     try {
         const providers = await Provider.find();
         res.json(providers);
-    } catch (err) {
+    } catch (error) {
         res.status(500).json({ error: "Server error" });
     }
 });
 
-// edit provider
+// get provider by id 
+router.get("/:id", async (req, res) => {
+    try {
+        const providers = await Provider.findById(req.params.id);
+        if (!providers) {
+            return res.status(404).json({ error: "Provider not found" });
+        }
+        res.json(providers);
+    } catch (error) {
+        res.status(500).json({ error: "Server error "});
+    }
+});
 
+// edit provider
 router.put("/:id", async (req,res) => {
     try {
-        const updatedProvider = await Provider.findByIdAndUpdate(
+        const provider = await Provider.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true, runValidators: true }
         );
-        if (!updatedProvider) {
+        if (!provider) {
             return res.status(404).json({ message: "Provider not found" });
         }
-        res.json(updatedProvider);
+        res.json(provider);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error("Error updating provider:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 });
 
