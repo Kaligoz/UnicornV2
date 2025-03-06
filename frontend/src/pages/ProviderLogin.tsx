@@ -3,17 +3,18 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/AuthContext";
+import { toast } from "react-toastify";
 
 const ProviderLogin = () => {
   const { login } = useAuth();
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const { username, password } = formData;
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value 
+  });
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,12 +26,12 @@ const ProviderLogin = () => {
 
       localStorage.setItem("token", res.data.token);
       login(res.data.token);
-      setMessage("Logged in successfully");
+      toast.success("Successfully logged in!");
 
       navigate("/");
     } catch (err) {
       console.error(err);
-      setMessage("Failed to login - wrong credentials");
+      toast.error("Failed to login - wrong credentials");
     }
   };
 
@@ -40,9 +41,6 @@ const ProviderLogin = () => {
         <h2 className="text-2xl text-[#F7F7F7] font-bold text-center mb-4">
           Login form
         </h2>
-        {message && (
-          <p className="text-center text-red-500 mb-4">{message}</p>
-        )}
         <form onSubmit={onSubmit} className="flex flex-col space-y-4 mb-4">
           <input
             type="text"

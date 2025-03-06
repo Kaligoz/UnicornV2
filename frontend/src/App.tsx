@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import { AuthProvider } from "./components/AuthContext";
+import { ToastContainer } from "react-toastify";
 import ProviderList from "./pages/ProviderList";
 import ProviderFormAdd from "./pages/ProviderFormAdd";
 import ProviderFormEdit from "./pages/ProviderFormEdit";
@@ -10,6 +11,7 @@ function App() {
   return (
   <AuthProvider>
     <Router>
+      <ToastContainer position="bottom-right" autoClose={3000} />
       <div className="p-6 overflow-auto h-screen">
         <Routes>
           <Route path="/" element={<ProviderList />} />

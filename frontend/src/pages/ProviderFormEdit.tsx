@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { updateProvider, getProviderById } from "../services/api";
 import { ElectricityProvider } from "../type/ElectricityProvider";
+import { toast } from "react-toastify";
 
 const ProviderFormEdit = () => {
   const { id } = useParams();
@@ -22,8 +23,9 @@ const ProviderFormEdit = () => {
       try {
         const data = await getProviderById(id);
         setProvider(() => data);
-      } catch (error) {
-        console.error("Error fetching provider:", error);
+      } catch (err) {
+        console.error(err);
+        toast.error("Error fetching provider, please try again!")
       }
     };
     fetchProvider();
@@ -33,14 +35,27 @@ const ProviderFormEdit = () => {
     setProvider({ ...provider, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    if(!provider.name || !provider.country || provider.marketShare <= 0 || provider.renewablePercentage <= 0 || provider.yearlyRevenue <= 0) {
+      toast.error("Please fill in all fields!")
+      return false;
+    } 
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) return;
+    
     if (!id) return;
     try {
       await updateProvider(id, provider); 
       navigate("/");
-    } catch (error) {
-      console.error("Error updating provider:", error);
+      toast.success("Successfully edited a provider!")
+    } catch (err) {
+      console.error(err);
+      toast.error("Error updating provider, please try again!")
     }
   };
 

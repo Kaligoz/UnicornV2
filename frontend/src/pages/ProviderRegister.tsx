@@ -3,11 +3,11 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Button } from '@/components/ui/button';
 import { useAuth } from "@/components/AuthContext";
+import { toast } from "react-toastify";
 
 const ProviderRegister = ({}) => {
   const { login } = useAuth();
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const { username, password } = formData;
 
@@ -22,15 +22,16 @@ const ProviderRegister = ({}) => {
             username,
             password
         });
-        setMessage('Registered successfully'); 
 
         localStorage.setItem("token", res.data.token);
         login(res.data.token);
 
+        toast.success("Successfully registered!");
+
         navigate("/");
     } catch (err) {
         console.error(err);
-        setMessage('Failed to register, User already exists'); 
+        toast.error('Failed to register, User already exists');
     }
   };
   
@@ -40,9 +41,6 @@ const ProviderRegister = ({}) => {
         <h2 className="text-2xl text-[#F7F7F7] font-bold text-center mb-4">
           Register form
         </h2>
-        {message && (
-          <p className="text-center text-red-500 mb-4">{message}</p>
-        )}
         <form onSubmit={onSubmit} className="flex flex-col space-y-4 mb-4">
           <input 
             type="text" 

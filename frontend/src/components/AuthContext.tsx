@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { toast } from "react-toastify";
 
 interface AuthContextType {
     loggedInUser: string | null;
@@ -29,8 +30,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    setLoggedInUser(null);
+    try {
+      localStorage.removeItem("token");
+      setLoggedInUser(null);
+      toast.success("Successfully logged out, Bye!");
+    } catch (error) {
+      toast.error('Failed to logout, could yoy perhaps stay?');
+    }
   };
 
   return (

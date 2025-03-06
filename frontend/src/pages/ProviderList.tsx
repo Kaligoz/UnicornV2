@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { EnergyPieChart, MarketPieChart } from "@/components/ui/pieCharts"
+import { toast } from "react-toastify";
 import { useAuth } from "../components/AuthContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,13 +20,24 @@ const ProviderList = () => {
   }, []);
 
   const fetchProviders = async () => {
-    const data = await getProviders();
-    setProviders(data);
+    try{
+      const data = await getProviders();
+      setProviders(data);
+    } catch (error) {
+      toast.error("Failed to fetch provider data. Please try again.");
+      console.error("Error deleting provider:", error);
+    }
   };
 
   const handleDelete = async (id: string) => {
-    await deleteProvider(id);
-    fetchProviders();
+    try{
+      await deleteProvider(id);
+      fetchProviders();
+      toast.success("Provider successfully deleted!");
+    } catch (error) {
+      toast.error("Failed to delete provider. Please try again.");
+      console.error("Error deleting provider:", error);
+    }
   };
 
   return (

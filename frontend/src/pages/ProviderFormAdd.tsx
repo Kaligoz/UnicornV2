@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { addProvider } from "../services/api";
 import { ElectricityProvider } from "../type/ElectricityProvider";
+import { toast } from "react-toastify";
 
 const ProviderFormAdd = () => {
   const [provider, setProvider] = useState<ElectricityProvider>({
@@ -17,10 +18,29 @@ const ProviderFormAdd = () => {
     setProvider({ ...provider, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    if(!provider.name || !provider.country || provider.marketShare <= 0 || provider.renewablePercentage <= 0 || provider.yearlyRevenue <= 0) {
+      toast.error("Please fill in all fields!")
+      return false;
+    } 
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
-    await addProvider(provider);
-    setProvider({ name: "", country: "", marketShare: 0, renewablePercentage: 0, yearlyRevenue: 0 });
+
+    if (!validateForm()) return;
+
+    try {
+      await addProvider(provider);
+      setProvider({ name: "", country: "", marketShare: 0, renewablePercentage: 0, yearlyRevenue: 0 });
+      toast.success("Successfully added a provider!");
+      navigate("/")
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to add a provider, please try again later!")
+    }
   };
 
   const navigate = useNavigate();
@@ -34,8 +54,8 @@ const ProviderFormAdd = () => {
       <input type="number" name="renewablePercentage"  onChange={handleChange} placeholder="Renewable %" className="border p-2 w-full"/>
       <input type="number" name="yearlyRevenue" onChange={handleChange} placeholder="Revenue (€)" className="border p-2 w-full"/>
       <div className="gap-4 flex"> 
-        <Button type="submit" variant={"outline"} onClick={() => navigate("/")}>Submit</Button>
-        <Button type="submit" variant={"destructive"} onClick={() => navigate("/")}>Cancel</Button>
+        <Button type="submit" variant={"outline"}>Submit</Button>
+        <Button type="button" variant={"destructive"} onClick={() => navigate("/")}>Cancel</Button>
       </div>
     </form>
   );
