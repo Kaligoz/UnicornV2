@@ -36,8 +36,8 @@ const ProviderRegister = ({}) => {
   };
   
   return(
-    <div className="flex items-center justify-center min-h-screen bg-gray-900">
-      <div className="bg-gray-800 p-8 rounded-md shadow-lg w-96">
+    <div className="flex items-center justify-center min-h-screen bg-[#171717]">
+      <div className="bg-[#171717] p-8 rounded-md shadow-lg w-96 border border-[#f7f7f7]">
         <h2 className="text-2xl text-[#F7F7F7] font-bold text-center mb-4">
           Register form
         </h2>
@@ -49,7 +49,7 @@ const ProviderRegister = ({}) => {
             value={username} 
             onChange={onChange} 
             required 
-            className="p-2 border rounded bg-gray-700 text-white"/>
+            className="p-2 border rounded bg-[#2c2c2c] text-[#F7F7F7]"/>
           <input 
             type="password" 
             placeholder="Password" 
@@ -57,7 +57,7 @@ const ProviderRegister = ({}) => {
             value={password} 
             onChange={onChange} 
             required 
-            className="p-2 border rounded bg-gray-700 text-white"/>
+            className="p-2 border rounded bg-[#2c2c2c] text-[#F7F7F7]"/>
           <Button variant={"outline"} type="submit" className="w-full">
               Register
           </Button>

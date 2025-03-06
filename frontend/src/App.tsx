@@ -12,7 +12,7 @@ function App() {
   <AuthProvider>
     <Router>
       <ToastContainer position="bottom-right" autoClose={3000} />
-      <div className="p-6 overflow-auto h-screen">
+      <div className="scrollbar-none overflow-auto h-screen">
         <Routes>
           <Route path="/" element={<ProviderList />} />
           <Route path="/add" element={<ProviderFormAdd />} />

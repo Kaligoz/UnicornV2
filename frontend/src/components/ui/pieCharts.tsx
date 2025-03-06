@@ -16,9 +16,9 @@ export function EnergyPieChart( {renewableEnergyPercent}: PieChartProps) {
     const COLORS = ["#A8180D", "#C79900"]; 
   
     return (
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md bg-[#171717] border-[#2c2c2c]">
         <CardHeader>
-          <CardTitle>Renewable Energy (%)</CardTitle>
+          <CardTitle className="text-[#F7F7F7]">Renewable Energy (%)</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center">
           <ResponsiveContainer width="100%" height={300}>
@@ -33,6 +33,7 @@ export function EnergyPieChart( {renewableEnergyPercent}: PieChartProps) {
                 paddingAngle={5}
                 dataKey="value"
                 label
+                stroke="none"
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index]} />
@@ -44,7 +45,7 @@ export function EnergyPieChart( {renewableEnergyPercent}: PieChartProps) {
         </CardContent>
       </Card>
     );
-  }
+}
   
 interface MarketPieChartProps {
     marketShare: number;
@@ -60,9 +61,9 @@ export function MarketPieChart({ marketShare}: MarketPieChartProps ) {
     const COLORS = ["#A8180D", "#C79900"]; 
   
     return (
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md bg-[#171717] border-[#2c2c2c]">
         <CardHeader>
-          <CardTitle>Energy Usage Breakdown (%)</CardTitle>
+          <CardTitle className="text-[#F7F7F7]">Energy Usage Breakdown (%)</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center">
           <ResponsiveContainer width="100%" height={300}>
@@ -77,6 +78,7 @@ export function MarketPieChart({ marketShare}: MarketPieChartProps ) {
                 paddingAngle={5}
                 dataKey="value"
                 label
+                stroke="none"
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index]} />
