@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 interface AuthContextType {
     loggedInUser: string | null;
     setLoggedInUser: (user: string | null) => void;
+    login: (token: string) => void;
     logout: () => void;
 }
 
@@ -22,13 +23,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }, []);
 
+  const login = (token: string ) => {
+    localStorage.setItem("token", token);
+    setLoggedInUser(token);
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     setLoggedInUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ loggedInUser, setLoggedInUser, logout }}>
+    <AuthContext.Provider value={{ loggedInUser, setLoggedInUser, logout, login }}>
       {children}
     </AuthContext.Provider>
   );

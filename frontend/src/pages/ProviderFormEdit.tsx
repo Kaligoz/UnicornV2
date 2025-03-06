@@ -37,8 +37,8 @@ const ProviderFormEdit = () => {
     e.preventDefault();
     if (!id) return;
     try {
-      await updateProvider(id, provider); // Update provider using API
-      navigate("/"); // Redirect after successful edit
+      await updateProvider(id, provider); 
+      navigate("/");
     } catch (error) {
       console.error("Error updating provider:", error);
     }
@@ -46,16 +46,16 @@ const ProviderFormEdit = () => {
 
   return (
     <form onSubmit={handleSubmit} className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold">Edit Electricity Provider</h1>
+      <h1 className="text-2xl font-bold text-[#F7F7F7]">Edit Electricity Provider</h1>
       <input name="name" value={provider.name} onChange={handleChange} placeholder="Name" className="border p-2 w-full" />
       <input name="country" value={provider.country} onChange={handleChange} placeholder="Country" className="border p-2 w-full" />
       <input type="number" name="marketShare" value={provider.marketShare} onChange={handleChange} placeholder="Market Share %" className="border p-2 w-full" />
       <input type="number" name="renewablePercentage" value={provider.renewablePercentage} onChange={handleChange} placeholder="Renewable %" className="border p-2 w-full" />
       <input type="number" name="yearlyRevenue" value={provider.yearlyRevenue} onChange={handleChange} placeholder="Revenue (€)" className="border p-2 w-full" />
-
-      {/* Buttons */}
-      <Button type="submit" variant={"outline"}>Save</Button>
-      <Button type="button" variant={"destructive"} onClick={() => navigate("/")}>Cancel</Button>
+      <div className="gap-4 flex"> 
+        <Button type="submit" variant={"outline"}>Save</Button>
+        <Button type="button" variant={"destructive"} onClick={() => navigate("/")}>Cancel</Button>
+      </div>
     </form>
   );
 };

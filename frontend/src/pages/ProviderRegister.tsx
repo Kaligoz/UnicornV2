@@ -2,8 +2,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Button } from '@/components/ui/button';
+import { useAuth } from "@/components/AuthContext";
 
 const ProviderRegister = ({}) => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -22,9 +24,12 @@ const ProviderRegister = ({}) => {
         });
         setMessage('Registered successfully'); 
 
+        localStorage.setItem("token", res.data.token);
+        login(res.data.token);
+
         navigate("/");
     } catch (err) {
-        console.error(err.response.data);
+        console.error(err);
         setMessage('Failed to register, User already exists'); 
     }
   };

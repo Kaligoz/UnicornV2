@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getProviders, deleteProvider } from "../services/api";
 import { ElectricityProvider } from "../type/ElectricityProvider";
+import { Search } from 'lucide-react';
 
 const ProviderList = () => {
   const [providers, setProviders] = useState<ElectricityProvider[]>([]);
@@ -30,12 +31,14 @@ const ProviderList = () => {
   return (
     <div className="p-6">
       <div>
-        <h1 className="text-2xl font-bold mb-4 text-[#F7F7F7]">Electricity Providers</h1>
+        <div  className="flex">
+          <h1 className="text-2xl font-bold mb-4 text-[#F7F7F7] select-none">Electricity Providers</h1>
+          <Button variant={"link"} onClick={() => navigate("/")} className="text-[#F7F7F7]"><Search /></Button>
+        </div>
         <div className="gap-4 flex">
           {loggedInUser && (  
             <Button variant={"outline"} onClick={() => navigate("/add")} className="mb-4">Add</Button>
           )}
-          <Button variant={"outline"} onClick={() => navigate("/search")}>Search</Button>
             {loggedInUser ? ( 
               <div className="ml-auto flex gap-4">
                 <Button variant={"outline"} onClick={logout} className="mb-4">Logout</Button>
@@ -47,7 +50,6 @@ const ProviderList = () => {
               </div>
             )}
         </div>
-
       </div>
       <ul className="space-y-2">
         {providers.map((provider) => (
@@ -59,7 +61,7 @@ const ProviderList = () => {
               <p className="text-[#F7F7F7]">Renewable: {provider.renewablePercentage}%</p>
               <p className="text-[#F7F7F7]">Revenue: €{provider.yearlyRevenue}</p>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 select-none">
               <EnergyPieChart renewableEnergyPercent={provider.renewablePercentage} />
               <MarketPieChart marketShare={provider.marketShare} />
             </div>

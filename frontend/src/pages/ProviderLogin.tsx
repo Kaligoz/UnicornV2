@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/components/AuthContext";
 
 const ProviderLogin = () => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ const ProviderLogin = () => {
       });
 
       localStorage.setItem("token", res.data.token);
+      login(res.data.token);
       setMessage("Logged in successfully");
 
       navigate("/");
