@@ -37,8 +37,8 @@ const ProviderLogin = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen  bg-[#171717]">
-      <div className="bg-[#171717] p-8 rounded-md shadow-lg w-96 border broder-[#f7f7f7]">
-        <h2 className="text-2xl text-[#F7F7F7] font-bold text-center mb-4">
+      <div className="bg-[#171717] p-8 rounded-md shadow-lg w-96 border broder-[#F7F3E3]">
+        <h2 className="text-2xl text-[#F7F3E3] font-bold text-center mb-4">
           Login form
         </h2>
         <form onSubmit={onSubmit} className="flex flex-col space-y-4 mb-4">
@@ -49,7 +49,7 @@ const ProviderLogin = () => {
             value={username}
             onChange={onChange}
             required
-            className="p-2 border rounded bg-[#2c2c2c] text-[#F7F7F7]"
+            className="p-2 border rounded bg-[#2c2c2c] text-[#F7F3E3]"
           />
           <input
             type="password"
@@ -58,18 +58,18 @@ const ProviderLogin = () => {
             value={password}
             onChange={onChange}
             required
-            className="p-2 border rounded bg-[#2c2c2c] text-[#F7F7F7]"
+            className="p-2 border rounded bg-[#2c2c2c] text-[#F7F3E3]"
           />
-          <Button variant={"outline"} type="submit" className="w-full">
+          <Button variant={"outline"} type="submit" className="w-full bg-[#F7F3E3] hover:bg-[#f7f4e8]">
             Login
           </Button>
         </form>
-        <div className='text-[#F7F7F7] flex flex-col items-center'>
+        <div className='text-[#F7F3E3] flex flex-col items-center'>
             <p>Don't have an account?</p>
             <Button 
               variant={"link"} 
               onClick={() => navigate("/register")} 
-              className='text-[#F7F7F7]'
+              className='text-[#F7F3E3]'
             >Register here</Button>
           </div>
       </div>

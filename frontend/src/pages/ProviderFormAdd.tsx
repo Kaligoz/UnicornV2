@@ -23,6 +23,10 @@ const ProviderFormAdd = () => {
       toast.error("Please fill in all fields!")
       return false;
     } 
+    if( provider.renewablePercentage > 100 || provider.marketShare > 100) {
+      toast.error("Please fill in possible numbers!")
+      return false;
+    }
     return true;
   };
 
@@ -47,15 +51,26 @@ const ProviderFormAdd = () => {
 
   return (
     <form onSubmit={handleSubmit} className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold text-[#F7F7F7]">Add Electricity Provider</h1>
-      <input name="name"  onChange={handleChange} placeholder="Name" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#f7f7f7] shadow-lg"/>
-      <input name="country"  onChange={handleChange} placeholder="Country" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#f7f7f7] shadow-lg"/>
-      <input type="number" name="marketShare"  onChange={handleChange} placeholder="Market Share %" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#f7f7f7] shadow-lg"/>
-      <input type="number" name="renewablePercentage"  onChange={handleChange} placeholder="Renewable %" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#f7f7f7] shadow-lg"/>
-      <input type="number" name="yearlyRevenue" onChange={handleChange} placeholder="Revenue ($)" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#f7f7f7] shadow-lg"/>
+      <h1 className="text-2xl font-bold text-[#F7F3E3]">Add Electricity Provider</h1>
+      <input name="name"  onChange={handleChange} placeholder="Name" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#F7F3E3] shadow-lg"/>
+      <input name="country"  onChange={handleChange} placeholder="Country" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#F7F3E3] shadow-lg"/>
+      <input type="number" name="marketShare"  onChange={handleChange} placeholder="Market Share %" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#F7F3E3] shadow-lg"/>
+      <input type="number" name="renewablePercentage"  onChange={handleChange} placeholder="Renewable %" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#F7F3E3] shadow-lg"/>
+      <input type="number" name="yearlyRevenue" onChange={handleChange} placeholder="Revenue ($)" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#F7F3E3] shadow-lg"/>
       <div className="gap-4 flex"> 
-        <Button type="submit" variant={"outline"}>Submit</Button>
-        <Button type="button" variant={"destructive"} onClick={() => navigate("/")}>Cancel</Button>
+      <Button 
+          type="submit" 
+          variant={"default"}
+          className="border border-[#F7F3E3]"
+          >Submit
+        </Button>
+        <Button 
+          type="button" 
+          variant={"secondary"}
+          className="bg-[#F7F3E3]"
+          onClick={() => navigate("/")}
+          >Cancel
+        </Button>
       </div>
     </form>
   );

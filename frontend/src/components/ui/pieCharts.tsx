@@ -13,12 +13,12 @@ export function EnergyPieChart( {renewableEnergyPercent}: PieChartProps) {
       { name: "Others", value: 100 - renewableEnergyPercent },
     ];
   
-    const COLORS = ["#A8180D", "#C79900"]; 
+    const COLORS = ["#FE5F55", "#DF2935"]; 
   
     return (
       <Card className="w-full max-w-md bg-[#171717] border-[#2c2c2c]">
         <CardHeader>
-          <CardTitle className="text-[#F7F7F7]">Renewable Energy (%)</CardTitle>
+          <CardTitle className="text-[#F7F3E3]">Renewable Energy (%)</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center">
           <ResponsiveContainer width="100%" height={300}>
@@ -58,12 +58,12 @@ export function MarketPieChart({ marketShare}: MarketPieChartProps ) {
       { name: "Others", value: 100 - marketShare }, 
     ];
   
-    const COLORS = ["#A8180D", "#C79900"]; 
+    const COLORS = ["#FE5F55", "#DF2935"]; 
   
     return (
       <Card className="w-full max-w-md bg-[#171717] border-[#2c2c2c]">
         <CardHeader>
-          <CardTitle className="text-[#F7F7F7]">Energy Usage Breakdown (%)</CardTitle>
+          <CardTitle className="text-[#F7F3E3]">Energy Usage Breakdown (%)</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center">
           <ResponsiveContainer width="100%" height={300}>
