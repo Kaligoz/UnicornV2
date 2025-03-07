@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { updateProvider, getProviderById } from "../services/api";
 import { ElectricityProvider } from "../type/ElectricityProvider";
 import { toast } from "react-toastify";
+import { validateProvider } from "@/utils/FormValidation";
 
 const ProviderFormEdit = () => {
   const { id } = useParams();
@@ -35,21 +36,10 @@ const ProviderFormEdit = () => {
     setProvider({ ...provider, [e.target.name]: e.target.value });
   };
 
-  const validateForm = () => {
-    if(!provider.name || !provider.country || provider.marketShare <= 0 || provider.renewablePercentage <= 0 || provider.yearlyRevenue <= 0) {
-      toast.error("Please fill in all fields!")
-      return false;
-    } if( provider.renewablePercentage > 100 || provider.marketShare > 100) {
-      toast.error("Please fill in possible numbers!")
-      return false;
-    }
-    return true;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
+    if (!validateProvider(provider)) return;
     
     if (!id) return;
     try {

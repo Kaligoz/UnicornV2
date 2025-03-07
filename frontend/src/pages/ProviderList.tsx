@@ -6,11 +6,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getProviders, deleteProvider } from "../services/api";
 import { ElectricityProvider } from "../type/ElectricityProvider";
+import { validateFilters, FilterType } from "../utils/filterValidation";
 import Filters from "../components/Filters"
+
+import Navbar from "../components/Navbar"
 
 const ProviderList = () => {
   const [providers, setProviders] = useState<ElectricityProvider[]>([]);
-
+  const [filters, setFilters] = useState<FilterType>({});
   const navigate = useNavigate();
 
   const { loggedInUser, logout } = useAuth();
@@ -24,10 +27,23 @@ const ProviderList = () => {
       const data = await getProviders();
       setProviders(data);
     } catch (error) {
-      toast.error("Failed to fetch provider data. Please try again.");
-      console.error("Error deleting provider:", error);
+      toast.error("Failed to fetch provider data.");
+      console.error("Error fetching provider:", error);
     }
   };
+
+  const filteredProviders = providers.filter(provider => {
+    return (
+      (filters.name ? provider.name.toLowerCase().includes(filters.name.toLowerCase()) : true) &&
+      (filters.country ? provider.country.toLowerCase().includes(filters.country.toLowerCase()) : true) &&
+      (filters.marketShareMin !== undefined ? provider.marketShare >= filters.marketShareMin : true) &&
+      (filters.marketShareMax !== undefined ? provider.marketShare <= filters.marketShareMax : true) &&
+      (filters.revenueMin !== undefined ? provider.yearlyRevenue >= filters.revenueMin : true) &&
+      (filters.revenueMax !== undefined ? provider.yearlyRevenue <= filters.revenueMax : true) &&
+      (filters.renewableMin !== undefined ? provider.renewablePercentage >= filters.renewableMin : true) &&
+      (filters.renewableMax !== undefined ? provider.renewablePercentage <= filters.renewableMax : true)
+    );
+  });
 
   const handleDelete = async (id: string) => {
     try{
@@ -35,7 +51,7 @@ const ProviderList = () => {
       fetchProviders();
       toast.success("Provider successfully deleted!");
     } catch (error) {
-      toast.error("Failed to delete provider. Please try again.");
+      toast.error("Failed to delete provider.");
       console.error("Error deleting provider:", error);
     }
   };
@@ -44,7 +60,14 @@ const ProviderList = () => {
     <div className="p-6">
       <div  className="flex justify-between items-center gap-4 mb-4">
         <h1 className="text-2xl font-bold text-[#F7F3E3] select-none w-full">Electricity Providers</h1>
-        <Filters/>
+        <Filters
+          onFilterChange={(newFilters: FilterType) => {
+            const validatedFilters = validateFilters(newFilters);
+            if (validatedFilters) {
+              setFilters(validatedFilters);
+            }
+          }}
+        />;
         <div className="flex gap-4">
           {loggedInUser ? ( 
             <div className="flex gap-4">
@@ -58,11 +81,15 @@ const ProviderList = () => {
           )}
         </div>
       </div>
+      {/*
+         <Navbar/>
+      */}
       {loggedInUser && (  
         <Button variant={"default"} onClick={() => navigate("/add")} className="border border-[#F7F3E3] mb-4">Add</Button>
       )}
-      <ul className="space-y-2">
-        {providers.map((provider) => (
+  <ul className="space-y-2">
+      {filteredProviders.length > 0 ? (
+        filteredProviders.map((provider) => (
           <li key={provider._id} className="p-2 flex flex-col justify-between">
             <div className="mb-2" style={{ height: '1px', background: 'linear-gradient(to right, #F7F3E3, transparent)' }}></div>
             <h2 className="text-lg font-semibold text-[#F7F3E3] mb-2">{provider.name}</h2>
@@ -74,22 +101,22 @@ const ProviderList = () => {
                 <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg mb-4"><span className="font-semibold">Renewable Energy:</span> {provider.renewablePercentage}%</p>
                 <div className="flex gap-4">
                   {loggedInUser && (
-                      <>
-                        <Button
-                          onClick={() => handleDelete(provider._id!)}
-                          variant={"secondary"}
-                          className="bg-[#F7F3E3]"
-                        >
-                          Delete
-                        </Button>
-                        <Button 
-                          variant={"default"} 
-                          className="border border-[#F7F3E3] mb-4"
-                          onClick={() => navigate(`/edit/${provider._id}`)}
-                        >
-                          Edit
-                        </Button>
-                      </>
+                    <>
+                      <Button
+                        onClick={() => handleDelete(provider._id!)}
+                        variant={"secondary"}
+                        className="bg-[#F7F3E3]"
+                      >
+                        Delete
+                      </Button>
+                      <Button 
+                        variant={"default"} 
+                        className="border border-[#F7F3E3] mb-4"
+                        onClick={() => navigate(`/edit/${provider._id}`)}
+                      >
+                        Edit
+                      </Button>
+                    </>
                   )}
                 </div>
               </div>
@@ -99,9 +126,12 @@ const ProviderList = () => {
               </div>
             </div>
           </li>
-        ))}
-      </ul>
-    </div>
+        ))
+      ) : (
+        <p className="text-[#F7F3E3]">No providers match the filters.</p>
+      )}
+    </ul>
+  </div>
   );
 };
 
