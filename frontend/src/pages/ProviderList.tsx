@@ -1,30 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { EnergyPieChart, MarketPieChart } from "@/components/ui/pieCharts"
 import { toast } from "react-toastify";
-import { useAuth } from "../components/AuthContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getProviders, deleteProvider } from "../services/api";
 import { ElectricityProvider } from "../type/ElectricityProvider";
-import Filters from "../components/Filters"
-
-interface FilterType {
-  name?: string;
-  country?: string;
-  marketShareMin?: number;
-  marketShareMax?: number;
-  revenueMin?: number;
-  revenueMax?: number;
-  renewableMin?: number;
-  renewableMax?: number;
-}
+import { FilterType } from "../type/FilterType";
+import Navbar from "@/components/Navbar";
+import { useAuth } from "@/components/AuthContext";
 
 const ProviderList = () => {
   const [providers, setProviders] = useState<ElectricityProvider[]>([]);
   const [filters, setFilters] = useState<FilterType>({});
   const navigate = useNavigate();
-
-  const { loggedInUser, logout } = useAuth();
 
   useEffect(() => {
     fetchProviders();
@@ -64,29 +52,20 @@ const ProviderList = () => {
     }
   };
 
+  const { loggedInUser, logout } = useAuth();
+
   const maxRevenue = Math.max(...providers.map(p => p.yearlyRevenue));
 
   return (
     <div className="p-6">
-      <div  className="flex justify-between items-center gap-4 mb-4">
-        <h1 className="text-2xl font-bold text-[#F7F3E3] select-none w-full">Electricity Providers</h1>
-        <Filters
-          onFilterChange={(newFilters: FilterType) => setFilters(newFilters)}
-          maxRevenue={maxRevenue}
-        />
-        <div className="flex gap-4">
-          {loggedInUser ? ( 
-            <div className="flex gap-4">
-              <Button variant={"default"} onClick={logout} className="border border-[#F7F3E3]">Logout</Button>
-            </div>
-          ) : (
-            <div className="flex gap-4">
-              <Button variant={"default"} onClick={() => navigate("/login")} className="border border-[#F7F3E3]">Login</Button>
-              <Button variant={"secondary"} onClick={() => navigate("/register")}>Register</Button>
-            </div>
-          )}
-        </div>
-      </div>
+      <Navbar 
+        setFilters={setFilters}
+        maxRevenue={maxRevenue}
+        loggedInUser={loggedInUser}
+        logout={logout}
+        navigate={navigate}
+      />
+      <div className="mt-16"></div>
       {loggedInUser && (  
         <Button variant={"default"} onClick={() => navigate("/add")} className="border border-[#F7F3E3] mb-4">Add</Button>
       )}

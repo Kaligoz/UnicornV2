@@ -5,5 +5,5 @@ export interface ElectricityProvider {
     marketShare: number;
     renewablePercentage: number;
     yearlyRevenue: number;
-  }
+}
   
