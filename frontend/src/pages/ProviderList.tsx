@@ -6,10 +6,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getProviders, deleteProvider } from "../services/api";
 import { ElectricityProvider } from "../type/ElectricityProvider";
-import { validateFilters, FilterType } from "../utils/filterValidation";
 import Filters from "../components/Filters"
 
-import Navbar from "../components/Navbar"
+interface FilterType {
+  name?: string;
+  country?: string;
+  marketShareMin?: number;
+  marketShareMax?: number;
+  revenueMin?: number;
+  revenueMax?: number;
+  renewableMin?: number;
+  renewableMax?: number;
+}
 
 const ProviderList = () => {
   const [providers, setProviders] = useState<ElectricityProvider[]>([]);
@@ -56,18 +64,16 @@ const ProviderList = () => {
     }
   };
 
+  const maxRevenue = Math.max(...providers.map(p => p.yearlyRevenue));
+
   return (
     <div className="p-6">
       <div  className="flex justify-between items-center gap-4 mb-4">
         <h1 className="text-2xl font-bold text-[#F7F3E3] select-none w-full">Electricity Providers</h1>
         <Filters
-          onFilterChange={(newFilters: FilterType) => {
-            const validatedFilters = validateFilters(newFilters);
-            if (validatedFilters) {
-              setFilters(validatedFilters);
-            }
-          }}
-        />;
+          onFilterChange={(newFilters: FilterType) => setFilters(newFilters)}
+          maxRevenue={maxRevenue}
+        />
         <div className="flex gap-4">
           {loggedInUser ? ( 
             <div className="flex gap-4">
@@ -81,9 +87,6 @@ const ProviderList = () => {
           )}
         </div>
       </div>
-      {/*
-         <Navbar/>
-      */}
       {loggedInUser && (  
         <Button variant={"default"} onClick={() => navigate("/add")} className="border border-[#F7F3E3] mb-4">Add</Button>
       )}

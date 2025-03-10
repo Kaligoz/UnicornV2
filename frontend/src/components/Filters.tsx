@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { Slider } from "./ui/slider";
+import { toast } from "react-toastify";
 
 interface FiltersProps {
     onFilterChange: 
@@ -16,20 +18,51 @@ interface FiltersProps {
             renewableMin?: number; 
             renewableMax?: number
         }) => void;
+        maxRevenue: number;
 }
 
-const Filters = ({ onFilterChange }: FiltersProps) => {
-    const [name, setName] = useState("");
-    const [country, setCountry] = useState("");
-    const [marketShareMin, setMarketShareMin] = useState<number | undefined>();
-    const [marketShareMax, setMarketShareMax] = useState<number | undefined>();
-    const [revenueMin, setRevenueMin] = useState<number | undefined>();
-    const [revenueMax, setRevenueMax] = useState<number | undefined>();
-    const [renewableMin, setRenewableMin] = useState<number | undefined>();
-    const [renewableMax, setRenewableMax] = useState<number | undefined>();
+const Filters = ({ onFilterChange, maxRevenue }: FiltersProps) => {
+    const [filters, setFilters] = useState({
+        name: "",
+        country: "",
+        marketShare: [0],
+        renewableEnergy: [0],
+        revenue: [0],
+    });
+
+    const updateFilters = (key: string, value: any) => {
+        setFilters((prev) => {
+            const updated = { ...prev, [key]: value };
+            return updated;
+        });
+    };
 
     const handleApplyFilters = () => {
-        onFilterChange({ name, country, marketShareMin, marketShareMax, revenueMin, revenueMax, renewableMin, renewableMax });
+        const appliedFilters = {
+            name: filters.name,
+            country: filters.country,
+            marketShareMin: filters.marketShare[0],
+            marketShareMax: filters.marketShare[1],
+            renewableMin: filters.renewableEnergy[0],
+            renewableMax: filters.renewableEnergy[1],
+            revenueMin: filters.revenue[0],
+            revenueMax: filters.revenue[1],
+        };
+        onFilterChange(appliedFilters);
+        toast.success("Filters applied!");
+    };
+
+    const handleResetFilters = () => {
+        const defaultFilters = {
+            name: "",
+            country: "",
+            marketShare: [0],
+            renewableEnergy: [0],
+            revenue: [0],
+        };
+        setFilters(defaultFilters);
+        onFilterChange(defaultFilters);
+        toast.success("Filters have been reset!");
     };
 
     return (
@@ -43,49 +76,66 @@ const Filters = ({ onFilterChange }: FiltersProps) => {
             <PopoverContent className="bg-[#171717] border-[#2c2c2c]">
                 <div className="grid grid-cols-1 grid-rows-6 w-full max-w-sm gap-1.5">
 
-                    <div>
-                        <Label htmlFor="name" className="text-[#F7F3E3]">Name</Label>
-                        <Input value={name} onChange={(e) => setName(e.target.value)} id="name" className="text-[#F7F3E3] border-[#F7F3E3]"/>
-                    </div>
-                    
-                    <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="country" className="text-[#F7F3E3]">Country</Label>
-                        <Input value={country} onChange={(e) => setCountry(e.target.value)} id="country" className="text-[#F7F3E3] border-[#F7F3E3]"/>
-                    </div>
+                    <InputField label="Name" value={filters.name} onChange={(e) => updateFilters("name", e.target.value)} />
 
-                    <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="Market Share" className="text-[#F7F3E3]">Market Share</Label>
-                        <div className="flex gap-1">
-                            <Input type="number" value={marketShareMin ?? ""} onChange={(e) => setMarketShareMin(Number(e.target.value) || undefined)} className="text-[#F7F3E3] border-[#F7F3E3]"/>
-                            <p className="text-[#F7F3E3] font-bold "> - </p>
-                            <Input type="number" value={marketShareMax ?? ""} onChange={(e) => setMarketShareMax(Number(e.target.value) || undefined)} className="text-[#F7F3E3] border-[#F7F3E3]"/>
-                        </div>
+                    <InputField label="Country" value={filters.country} onChange={(e) => updateFilters("country", e.target.value)} />
+
+                    <SliderField
+                        label="Market Share"
+                        value={filters.marketShare}
+                        onChange={(value) => updateFilters("marketShare", value)}
+                        min={0}
+                        max={100}
+                    />
+
+                    <SliderField
+                        label="Renewable Energy"
+                        value={filters.renewableEnergy}
+                        onChange={(value) => updateFilters("renewableEnergy", value)}
+                        min={0}
+                        max={100}
+                    />
+
+                    <SliderField 
+                        label="Yearly Revenue" 
+                        value={filters.revenue} 
+                        onChange={(value) => updateFilters("revenue", value)} 
+                        min={0} 
+                        max={maxRevenue} 
+                    />
+
+                    <div className="flex justify-between">
+                        <Button onClick={handleApplyFilters} className="border border-[#F7F3E3] mt-4">Apply Filters</Button>
+                        <Button onClick={handleResetFilters} className="border border-[#F7F3E3] mt-4">Reset Filters</Button>
                     </div>
-
-                    <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="Yearly Revenue" className="text-[#F7F3E3]">Yearly Revenue</Label>
-                        <div className="flex gap-1">
-                            <Input type="number"  value={revenueMin ?? ""} onChange={(e) => setRevenueMin(Number(e.target.value) || undefined)} className="text-[#F7F3E3] border-[#F7F3E3]"/>
-                            <p className="text-[#F7F3E3] font-bold "> - </p>
-                            <Input type="number" value={revenueMax ?? ""} onChange={(e) => setRevenueMax(Number(e.target.value) || undefined)}  className="text-[#F7F3E3] border-[#F7F3E3]"/>
-                        </div>
-                    </div>
-
-                    <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="Renewable Energy" className="text-[#F7F3E3]">Renewable Energy</Label>
-                        <div className="flex gap-1">
-                            <Input type="number" value={renewableMin ?? ""} onChange={(e) => setRenewableMin(Number(e.target.value) || undefined)}  className="text-[#F7F3E3] border-[#F7F3E3]"/>
-                            <p className="text-[#F7F3E3] font-bold "> - </p>
-                            <Input type="number" value={renewableMax ?? ""} onChange={(e) => setRenewableMax(Number(e.target.value) || undefined)}  className="text-[#F7F3E3] border-[#F7F3E3]"/>
-                        </div>
-                    </div>
-
-                    <Button onClick={handleApplyFilters} className="border border-[#F7F3E3] mt-4">Apply Filters</Button>
-
                 </div>
             </PopoverContent>
         </Popover>
     );
-}
+};
+
+const InputField = ({ label, value, onChange }: { label: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
+    <div className="grid gap-1.5">
+        <Label className="text-[#F7F3E3]">{label}</Label>
+        <Input value={value} onChange={onChange} className="text-[#F7F3E3] border-[#F7F3E3]" />
+    </div>
+);
+
+const SliderField = ({ label, value, onChange, min, max }: { label: string; value: number[]; onChange: (val: number[]) => void; min: number; max: number}) => (
+    <div className="grid gap-1.5">
+        <Label className="text-[#F7F3E3]">{label}</Label>
+        <div className="flex items-center gap-2">
+            <p className="text-[#F7F3E3]">{value[0]}</p>
+            <Slider 
+                value={value} 
+                onValueChange={onChange} 
+                min={min} 
+                max={max} 
+                step={1}  
+            />
+            <p className="text-[#F7F3E3]">{value[1]}</p>
+        </div>
+    </div>
+);
 
 export default Filters

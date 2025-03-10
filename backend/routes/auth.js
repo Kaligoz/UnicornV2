@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
             user: { id: user.id }
         };
 
-        jwt.sign(payload, process.env.jwtSecret, { expiresIn: 3600 }, 
+        jwt.sign(payload, process.env.JWTSECRET, { expiresIn: 3600 }, 
         (err, token) => {
             if (err) throw err;
             res.json({ token });
@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
             }
         };
 
-        jwt.sign(payload, process.env.jwtSecret, { expiresIn: 3600 }, 
+        jwt.sign(payload, process.env.JWTSECRET, { expiresIn: 3600 }, 
         (err, token) => {
             if (err) throw err;
             res.json({ token });
