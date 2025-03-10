@@ -2,16 +2,16 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 import { toast } from "react-toastify";
 
 interface AuthContextType {
-    loggedInUser: string | null;
-    setLoggedInUser: (user: string | null) => void;
-    login: (token: string) => void;
-    logout: () => void;
+  loggedInUser: string | null;
+  setLoggedInUser: (user: string | null) => void;
+  login: (token: string) => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {

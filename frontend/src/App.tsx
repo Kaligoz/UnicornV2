@@ -11,7 +11,7 @@ function App() {
   return (
   <AuthProvider>
     <Router>
-      <ToastContainer position="bottom-right" autoClose={3000} />
+      <ToastContainer position="bottom-right" autoClose={3000} theme="dark" pauseOnFocusLoss={false}/>
       <div className="scrollbar-none overflow-auto h-screen">
         <Routes>
           <Route path="/" element={<ProviderList />} />

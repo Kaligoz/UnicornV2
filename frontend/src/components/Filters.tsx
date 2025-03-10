@@ -22,6 +22,7 @@ interface FiltersProps {
 }
 
 const Filters = ({ onFilterChange, maxRevenue }: FiltersProps) => {
+    
     const [filters, setFilters] = useState({
         name: "",
         country: "",
