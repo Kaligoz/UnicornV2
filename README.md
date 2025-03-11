@@ -28,6 +28,8 @@ pnpm install axios recharts shadcn-ui @radix-ui/react-toast react-toastify
 
 4|Start the frontend by running:
 
+```bash
 pnpm run dev
+```
 
 5|Visit http://localhost:5173/ to view the project.
