@@ -1,4 +1,4 @@
-# 1.Backend Setup
+# Backend Setup
    
 1| Open a terminal and navigate to the backend directory.
 
@@ -30,7 +30,7 @@ pnpm run dev
 API is running...
 ```
 
-# 2.Frontend Setup
+# Frontend Setup
 
 1| Open another terminal and navigate to the frontend directory.
 
