@@ -23,10 +23,18 @@ const ProviderFormAdd = () => {
 
     e.preventDefault();
 
+    const providerData = {
+      name: provider.name,
+      country: provider.country,
+      marketShare: Number(provider.marketShare),  
+      renewablePercentage: Number(provider.renewablePercentage),
+      yearlyRevenue: Number(provider.yearlyRevenue)
+    };
+
     if (!validateProvider(provider)) return;
 
     try {
-      await addProvider(provider);
+      await addProvider(providerData);
       setProvider({ name: "", country: "", marketShare: 0, renewablePercentage: 0, yearlyRevenue: 0 });
       toast.success("Successfully added a provider!");
       navigate("/")

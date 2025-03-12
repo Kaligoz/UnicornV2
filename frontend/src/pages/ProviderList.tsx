@@ -8,6 +8,7 @@ import { ElectricityProvider } from "../type/ElectricityProvider";
 import { FilterType } from "../type/FilterType";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/components/AuthContext";
+import { Switch } from "@/components/ui/switch";
 
 const ProviderList = () => {
   const [providers, setProviders] = useState<ElectricityProvider[]>([]);

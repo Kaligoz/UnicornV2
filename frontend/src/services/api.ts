@@ -16,6 +16,7 @@ export const addProvider = async (providerData: {
     renewablePercentage: number;
     yearlyRevenue: number;
   }) => {
+    
     try {
       const { id, ...dataWithoutId } = providerData;
   
@@ -28,10 +29,10 @@ export const addProvider = async (providerData: {
       console.error("Error adding provider:", error);
       throw error;
     }
-  };
+};
   
 
-  export const updateProvider = async (id: string, provider: ElectricityProvider) => {
+export const updateProvider = async (id: string, provider: ElectricityProvider) => {
     try {
       const response = await axios.put( `${API_URL}/${id}`, provider);
       return response.data; 
@@ -39,7 +40,7 @@ export const addProvider = async (providerData: {
       console.error("Error updating provider:", error);
       throw error;
     }
-  };
+};
 
 export const deleteProvider = async (id: string) => {
   await axios.delete(`${API_URL}/${id}`);

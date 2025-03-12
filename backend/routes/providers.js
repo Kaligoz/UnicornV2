@@ -1,11 +1,12 @@
 const express = require("express");
 const Provider = require("../models/Provider");
+const { validateProvider } = require('../validators/providerValidator');
 
 const router = express.Router();
 
 // add a provider
 
-router.post("/", async (req, res) => {
+router.post("/", validateProvider, async (req, res) => {
     const { name, country, marketShare, renewablePercentage, yearlyRevenue } = req.body;
 
     if (!name) {
@@ -63,7 +64,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // edit provider
-router.put("/:id", async (req,res) => {
+router.put("/:id", validateProvider, async (req,res) => {
     try {
         const provider = await Provider.findByIdAndUpdate(
             req.params.id,
