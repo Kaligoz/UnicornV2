@@ -7,4 +7,4 @@ export interface FilterType {
     revenueMax?: number;
     renewableMin?: number;
     renewableMax?: number;
-}
+};

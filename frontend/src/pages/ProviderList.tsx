@@ -8,7 +8,7 @@ import { ElectricityProvider } from "../type/ElectricityProvider";
 import { FilterType } from "../type/FilterType";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/components/AuthContext";
-import { Switch } from "@/components/ui/switch";
+import { colorPresets } from "@/type/ColorThemes";
 
 const ProviderList = () => {
   const [providers, setProviders] = useState<ElectricityProvider[]>([]);
@@ -52,6 +52,12 @@ const ProviderList = () => {
       console.error("Error deleting provider:", error);
     }
   };
+
+  const getProviderColor = (providerName: string): keyof typeof colorPresets => {
+    const storedColor = localStorage.getItem(`color-${providerName}`);
+    return (storedColor && storedColor in colorPresets ? storedColor : "blue") as keyof typeof colorPresets;
+  };
+
 
   const { loggedInUser, logout } = useAuth();
 
@@ -104,8 +110,8 @@ const ProviderList = () => {
                 </div>
               </div>
               <div className="flex gap-4 select-none w-full">
-                <EnergyPieChart renewableEnergyPercent={provider.renewablePercentage} />
-                <MarketPieChart marketShare={provider.marketShare} />
+                <EnergyPieChart  renewableEnergyPercent={provider.renewablePercentage} colorTheme={getProviderColor(provider.name) as keyof typeof colorPresets} />
+                <MarketPieChart  marketShare={provider.marketShare} colorTheme={getProviderColor(provider.name) as keyof typeof colorPresets} />
               </div>
             </div>
           </li>

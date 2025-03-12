@@ -73,6 +73,6 @@ const ProviderRegister = ({}) => {
       </div>
     </div>
   );
-}
+};
 
 export default ProviderRegister

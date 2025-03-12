@@ -9,20 +9,20 @@ import ProviderRegister from "./pages/ProviderRegister";
 
 function App() {
   return (
-  <AuthProvider>
-    <Router>
-      <ToastContainer position="bottom-right" autoClose={3000} theme="dark" pauseOnFocusLoss={false}/>
-      <div className="scrollbar-none overflow-auto h-screen">
-        <Routes>
-          <Route path="/" element={<ProviderList />} />
-          <Route path="/add" element={<ProviderFormAdd />} />
-          <Route path="/edit/:id" element={<ProviderFormEdit />} />
-          <Route path="/login" element={<ProviderLogin />} />
-          <Route path="/register" element={<ProviderRegister />} />
-        </Routes>
-      </div>
-    </Router>
-  </AuthProvider>
+    <AuthProvider>
+      <Router>
+        <ToastContainer position="bottom-right" autoClose={3000} theme="dark" pauseOnFocusLoss={false}/>
+        <div className="scrollbar-none overflow-auto h-screen">
+          <Routes>
+            <Route path="/" element={<ProviderList />} />
+            <Route path="/add" element={<ProviderFormAdd />} />
+            <Route path="/edit/:id" element={<ProviderFormEdit />} />
+            <Route path="/login" element={<ProviderLogin />} />
+            <Route path="/register" element={<ProviderRegister />} />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 };
 

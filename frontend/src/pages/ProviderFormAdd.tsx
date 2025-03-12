@@ -5,6 +5,7 @@ import { addProvider } from "../services/api";
 import { ElectricityProvider } from "../type/ElectricityProvider";
 import { toast } from "react-toastify";
 import { validateProvider } from "@/utils/FormValidation";
+import { colorPresets }from "@/type/ColorThemes"
 
 const ProviderFormAdd = () => {
   const [provider, setProvider] = useState<ElectricityProvider>({
@@ -14,6 +15,8 @@ const ProviderFormAdd = () => {
     renewablePercentage: 0,
     yearlyRevenue: 0,
   });
+
+  const [colorTheme, setColorTheme] = useState<keyof typeof colorPresets>("red");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProvider({ ...provider, [e.target.name]: e.target.value });
@@ -36,6 +39,7 @@ const ProviderFormAdd = () => {
     try {
       await addProvider(providerData);
       setProvider({ name: "", country: "", marketShare: 0, renewablePercentage: 0, yearlyRevenue: 0 });
+      localStorage.setItem(`color-${provider.name}`, colorTheme);
       toast.success("Successfully added a provider!");
       navigate("/")
     } catch (err) {
@@ -54,6 +58,22 @@ const ProviderFormAdd = () => {
       <input type="number" name="marketShare"  onChange={handleChange} placeholder="Market Share %" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#F7F3E3] shadow-lg"/>
       <input type="number" name="renewablePercentage"  onChange={handleChange} placeholder="Renewable %" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#F7F3E3] shadow-lg"/>
       <input type="number" name="yearlyRevenue" onChange={handleChange} placeholder="Revenue ($)" className="border p-2 w-full rounded-lg border-[#2c2c2c] bg-[#171717] text-[#F7F3E3] shadow-lg"/>
+      <div>
+        <label className="text-[#F7F3E3]">
+          Select Chart Color:
+          <select
+            className="ml-2 p-1 bg-[#2c2c2c] text-[#F7F3E3] rounded"
+            value={colorTheme}
+            onChange={(e) => setColorTheme(e.target.value as keyof typeof colorPresets)}
+          >
+            {Object.keys(colorPresets).map((theme) => (
+              <option key={theme} value={theme}>
+                {theme.charAt(0).toUpperCase() + theme.slice(1)}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
       <div className="gap-4 flex"> 
       <Button 
           type="submit" 
