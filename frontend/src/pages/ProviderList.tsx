@@ -72,7 +72,7 @@ const ProviderList = () => {
         logout={logout}
         navigate={navigate}
       />
-      <div className="mt-16"></div>
+      <div className="mt-20 sm:mt-16"></div>
       {loggedInUser && (  
         <Button variant={"default"} onClick={() => navigate("/add")} className="border border-[#F7F3E3] mb-4">Add</Button>
       )}
@@ -81,35 +81,35 @@ const ProviderList = () => {
         filteredProviders.map((provider) => (
           <li key={provider._id} className="p-2 flex flex-col justify-between">
             <div className="mb-2" style={{ height: '1px', background: 'linear-gradient(to right, #F7F3E3, transparent)' }}></div>
-            <h2 className="text-lg font-semibold text-[#F7F3E3] mb-2">{provider.name}</h2>
-            <div className="grid grid-cols-2 grid-rows-1 mb-4 gap-4">
+            <div className="flex gap-4 mb-4 ">
+              <h2 className="text-lg font-semibold text-[#F7F3E3] mb-2">{provider.name}</h2>
+              {loggedInUser && (
+                <>
+                <Button 
+                  variant={"default"} 
+                  className="border border-[#F7F3E3]"
+                  onClick={() => navigate(`/edit/${provider._id}`)}
+                >
+                Edit
+                </Button>
+                <Button
+                  onClick={() => handleDelete(provider._id!)}
+                  variant={"secondary"}
+                  className="bg-[#F7F3E3]"
+                >
+                Delete
+                </Button>
+                </>
+              )}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 mb-4 gap-4">
               <div className="flex flex-col gap-2">
-                <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg"><span className="font-semibold">Country:</span> {provider.country}</p>
+                <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg"><span className="font-semibold"> {provider.country}</span> USA</p>
                 <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg"><span className="font-semibold">Yearly Revenue:</span> ${provider.yearlyRevenue}</p>
                 <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg"><span className="font-semibold">Market Share:</span> {provider.marketShare}%</p>
-                <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg mb-4"><span className="font-semibold">Renewable Energy:</span> {provider.renewablePercentage}%</p>
-                <div className="flex gap-4">
-                  {loggedInUser && (
-                    <>
-                      <Button
-                        onClick={() => handleDelete(provider._id!)}
-                        variant={"secondary"}
-                        className="bg-[#F7F3E3]"
-                      >
-                        Delete
-                      </Button>
-                      <Button 
-                        variant={"default"} 
-                        className="border border-[#F7F3E3] mb-4"
-                        onClick={() => navigate(`/edit/${provider._id}`)}
-                      >
-                        Edit
-                      </Button>
-                    </>
-                  )}
-                </div>
+                <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg"><span className="font-semibold">Renewable Energy:</span> {provider.renewablePercentage}%</p>
               </div>
-              <div className="flex gap-4 select-none w-full">
+              <div className="flex flex-col md:flex-row gap-4 select-none w-full">
                 <EnergyPieChart  renewableEnergyPercent={provider.renewablePercentage} colorTheme={getProviderColor(provider.name) as keyof typeof colorPresets} />
                 <MarketPieChart  marketShare={provider.marketShare} colorTheme={getProviderColor(provider.name) as keyof typeof colorPresets} />
               </div>
