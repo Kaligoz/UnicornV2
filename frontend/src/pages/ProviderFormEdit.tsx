@@ -46,11 +46,19 @@ const ProviderFormEdit = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateProvider(provider)) return;
+    const providerData = {
+      name: provider.name,
+      country: provider.country,
+      marketShare: Number(provider.marketShare),  
+      renewablePercentage: Number(provider.renewablePercentage),
+      yearlyRevenue: Number(provider.yearlyRevenue)
+    };
+
+    if (!validateProvider(providerData)) return;
     
     if (!id) return;
     try {
-      await updateProvider(id, provider); 
+      await updateProvider(id, providerData); 
       localStorage.setItem(`color-${provider.name}`, colorTheme);
       navigate("/");
       toast.success("Successfully edited a provider!")
