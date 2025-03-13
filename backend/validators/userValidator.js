@@ -1,11 +1,11 @@
-import { z } from "zod";
+const { z } = require("zod");
 
-export const userValidationSchema = z.object({
+const userValidationSchema = z.object({
     username: z.string().min(1, "Username must be at least 1 characters"),
     password: z.string().min(3, "Password must be at least 3 characters"),
 });
 
-export const validateUser = (req, res, next) => {
+const validateUser = (req, res, next) => {
     const validation = userValidationSchema.safeParse(req.body);
 
     if (!validation.success) {
@@ -14,3 +14,5 @@ export const validateUser = (req, res, next) => {
 
     next();
 };
+
+module.exports = { userValidationSchema, validateUser }

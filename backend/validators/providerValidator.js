@@ -1,6 +1,6 @@
-import { z } from "zod"; 
+const { z } = require("zod");
 
-export const providerValidationSchema = z.object({
+const providerValidationSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     country: z.string().min(3, "Country must be at least 4 characters"),
     marketShare: z.number()
@@ -12,7 +12,7 @@ export const providerValidationSchema = z.object({
     yearlyRevenue: z.number().positive("Yearly revenue must be positive") ,
 });
 
-export const validateProvider = (req, res, next) => {
+const validateProvider = (req, res, next) => {
     const validation = providerValidationSchema.safeParse(req.body);
 
     if (!validation.success) {
@@ -21,3 +21,5 @@ export const validateProvider = (req, res, next) => {
 
     next();
 };
+
+module.exports = { providerValidationSchema, validateProvider };
