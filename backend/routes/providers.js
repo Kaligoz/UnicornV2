@@ -9,23 +9,12 @@ const router = express.Router();
 router.post("/", validateProvider, async (req, res) => {
     const { name, country, marketShare, renewablePercentage, yearlyRevenue } = req.body;
 
-    if (!name) {
-        return res.status(400).json({ message: "Name is required" });
-    }
-
-    const newProvider = new Provider({
-        name,
-        country,
-        marketShare,
-        renewablePercentage,
-        yearlyRevenue
-    });
-
+    const newProvider = new Provider({ name, country, marketShare, renewablePercentage, yearlyRevenue });
     try {
         const savedProvider = await newProvider.save();
         res.status(201).json(savedProvider)
     } catch (error) {
-        res.status(400).json({ error: "Invalid data" });
+        next(error);
     }
 });
 
@@ -36,7 +25,7 @@ router.delete("/:id", async (req, res) => {
         await Provider.findByIdAndDelete(req.params.id);
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 });
 
@@ -46,7 +35,7 @@ router.get("/", async (req, res) => {
         const providers = await Provider.find();
         res.json(providers);
     } catch (error) {
-        res.status(500).json({ error: "Server error" });
+        next(error);
     }
 });
 
@@ -59,7 +48,7 @@ router.get("/:id", async (req, res) => {
         }
         res.json(providers);
     } catch (error) {
-        res.status(500).json({ error: "Server error "});
+        next(error);
     }
 });
 
@@ -76,8 +65,7 @@ router.put("/:id", validateProvider, async (req,res) => {
         }
         res.json(provider);
     } catch (error) {
-        console.error("Error updating provider:", error);
-        res.status(500).json({ message: "Internal server error" });
+        next(error);
     }
 });
 

@@ -1,12 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require("morgan");
 require("dotenv").config();
+const errorHandler = require("./errorhandler")
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({extended: true}));
+app.use(helmet());
+app.use(morgan("dev"));
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
