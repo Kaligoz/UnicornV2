@@ -1,6 +1,6 @@
 # Backend Setup
    
-Open a terminal and navigate to the backend directory.
+Open a terminal and navigate to the backend directory:
 
 ```bash
 cd backend
@@ -12,9 +12,9 @@ Install dependencies by running:
 pnpm install
 ```
 
-Rename the .env.example file to .env.
+Rename the .env.example file to .env
 
-Generate a custom JWTSECRET and enter it in the .env file.
+Generate a custom JWTSECRET and enter it in the .env file:
 
 ```bash
 JWTSECRET=your_jwtsecret_custom_key
@@ -26,22 +26,13 @@ Use an existing MongoDB database and set its connection string in the .env file:
 MONGO_URI=your_mongodb_connection_string
 ```
 
-Go to package.json file and enter this code before the dependencies:
-
-```bash
-"scripts": {
-		"start": "node server.js",
-		"dev": "nodemon server.js"
-	},
-```
-
 Start the backend server by running:
 
 ```bash
 pnpm run dev
 ```
 
-To verify that the backend is running, visit http://localhost:5000/. You should see the message:
+To verify that the backend is running, visit http://localhost:5000/ You should see the message:
 
 ```bash
 API is running...
