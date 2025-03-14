@@ -1,133 +1,135 @@
-# Get All Providers
+# API Endpoints
 
-Endpoint: GET /providers
+# Register Endpoint
 
-Description: Fetches a list of all electricity providers.
-
-Request Parameters: None
-
-Response:
+Endpoint URL
 
 ```bash
-[
-  {
-    "id": "1",
-    "name": "Provider A",
-    "country": "Germany",
-    "marketShare": 15.5,
-    "renewablePercentage": 70,
-    "yearlyRevenue": 5000000
-  },
-  {
-    "id": "2",
-    "name": "Provider B",
-    "country": "France",
-    "marketShare": 10,
-    "renewablePercentage": 60,
-    "yearlyRevenue": 4000000
-  }
-]
+/register
 ```
 
-# Get Provider by ID
+HTTP Method
 
-Endpoint: GET /providers/{id}
+POST
 
-Description: Fetches a single electricity provider by its ID.
+Request Headers
 
-Request Parameters:
+```bash
+Content_Type: application/json
+```
 
-id (string, required) – The unique identifier of the provider.
+Request Parameters
 
-Response:
+None
+
+Request Body
 
 ```bash
 {
-  "id": "1",
-  "name": "Provider A",
-  "country": "Germany",
-  "marketShare": 15.5,
-  "renewablePercentage": 70,
-  "yearlyRevenue": 5000000
+    "username": "string",
+    "password": "string"
 }
 ```
 
-# Add a New Provider
+Response
 
-Endpoint: POST /providers
+Success(200)
+```bash
+{
+    "token": "string"
+}
+```
 
-Description: Adds a new electricity provider to the database.
+Error Responses 
 
-Request Body:
+400 Bad Request: User already exists
 
 ```bash
 {
-  "name": "Provider C",
-  "country": "Spain",
-  "marketShare": 12.5,
-  "renewablePercentage": 80,
-  "yearlyRevenue": 6000000
+    "msg: "User already exists"
 }
 ```
 
-Response:
+Example Request
+```bash
+POST localhost:5000/auth/register \
+-H "Content-Type: application/json" \
+-d '{
+    "username": "exampleUser",
+    "password": "examplePass"
+}'
+```
+
+Example Response
+```bash
+{
+    "token": "your.jwt.token"
+}
+```
+
+# Login Endpoint
+
+Endpoint URL
+
+```bash
+/login
+```
+
+HTTP Method
+
+POST
+
+Request Headers
+
+```bash
+Content_Type: application/json
+```
+
+Request Parameters
+
+None
+
+Request Body
 
 ```bash
 {
-  "id": "3",
-  "name": "Provider C",
-  "country": "Spain",
-  "marketShare": 12.5,
-  "renewablePercentage": 80,
-  "yearlyRevenue": 6000000
+    "username": "string",
+    "password": "string"
 }
 ```
 
-# Update an Existing Provider
+Response
 
-Endpoint: PUT /providers/{id}
+Success(200)
+```bash
+{
+    "token": "string"
+}
+```
 
-Description: Updates an existing electricity provider's details.
+Error Responses 
 
-Request Parameters:
-
-id (string, required) – The unique identifier of the provider.
-
-Request Body:
+400 Bad Request: Invalid credentials
 
 ```bash
 {
-  "name": "Updated Provider A",
-  "country": "Germany",
-  "marketShare": 16.0,
-  "renewablePercentage": 75,
-  "yearlyRevenue": 5500000
-}
-
-Response:
-
-{
-  "id": "1",
-  "name": "Updated Provider A",
-  "country": "Germany",
-  "marketShare": 16.0,
-  "renewablePercentage": 75,
-  "yearlyRevenue": 5500000
+    "msg: " Invalid credentials"
 }
 ```
 
-# Delete a Provider
+Example Request
+```bash
+POST localhost:5000/auth/login \
+-H "Content-Type: application/json" \
+-d '{
+    "username": "exampleUser",
+    "password": "examplePass"
+}'
+```
 
-Endpoint: DELETE /providers/{id}
-
-Description: Deletes an electricity provider by its ID.
-
-Request Parameters:
-
-id (string, required) – The unique identifier of the provider.
-
-Response:
-
-Status Code: 204 No Content (if successful)
-
-Status Code: 404 Not Found (if provider does not exist)
+Example Response
+```bash
+{
+    "token": "your.jwt.token"
+}
+```
