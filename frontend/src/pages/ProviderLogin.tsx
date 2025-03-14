@@ -30,8 +30,9 @@ const ProviderLogin = () => {
 
       navigate("/");
     } catch (err) {
-      console.error(err);
-      toast.error("Failed to login - wrong credentials");
+      const errorMessage = (err as Error).message || "Failed to login - wrong credentials!";
+      console.error(errorMessage);
+      toast.error(errorMessage);
     }
   };
 

@@ -40,8 +40,14 @@ const ProviderFormEdit = () => {
   }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProvider({ ...provider, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+  
+    setProvider((prevProvider) => ({
+      ...prevProvider,
+      [name]: type === "number" ? Number(value) || 0 : value,
+    }));
   };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

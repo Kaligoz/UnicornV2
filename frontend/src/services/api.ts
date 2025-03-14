@@ -8,21 +8,12 @@ export const getProviders = async () => {
   return response.data;
 };
 
-export const addProvider = async (providerData: {
-    id?: string; 
-    name: string;
-    country: string;
-    marketShare: number;
-    renewablePercentage: number;
-    yearlyRevenue: number;
-  }) => {
+export const addProvider = async (providerData: Omit<ElectricityProvider, "_id">) => {
     
     try {
-      const { id, ...dataWithoutId } = providerData;
-  
-      const response = await axios.post(API_URL, dataWithoutId, {
+      const response = await axios.post(API_URL, providerData, {
         headers: { "Content-Type": "application/json" },
-      });
+    });
   
       return response.data;
     } catch (error) {
@@ -34,7 +25,9 @@ export const addProvider = async (providerData: {
 
 export const updateProvider = async (id: string, provider: ElectricityProvider) => {
     try {
-      const response = await axios.put( `${API_URL}/${id}`, provider);
+      const response = await axios.put( `${API_URL}/${id}`, provider, {
+        headers: { "Content-Type": "application/json" }
+      });
       return response.data; 
     } catch (error) {
       console.error("Error updating provider:", error);

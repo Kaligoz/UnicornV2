@@ -43,15 +43,18 @@ const ProviderList = () => {
   });
 
   const handleDelete = async (id: string) => {
-    try{
+    const updatedProviders = providers.filter(provider => provider._id !== id);
+    setProviders(updatedProviders);
+    try {
       await deleteProvider(id);
-      fetchProviders();
       toast.success("Provider successfully deleted!");
     } catch (error) {
       toast.error("Failed to delete provider.");
       console.error("Error deleting provider:", error);
+      fetchProviders(); 
     }
   };
+  
 
   const getProviderColor = (providerName: string): keyof typeof colorPresets => {
     const storedColor = localStorage.getItem(`color-${providerName}`);
@@ -61,7 +64,7 @@ const ProviderList = () => {
 
   const { loggedInUser, logout } = useAuth();
 
-  const maxRevenue = Math.max(...providers.map(p => p.yearlyRevenue));
+  const maxRevenue = providers.length ? Math.max(...providers.map(p => p.yearlyRevenue)) : 0;
 
   return (
     <div className="p-6">
@@ -104,7 +107,7 @@ const ProviderList = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 mb-4 gap-4">
               <div className="flex flex-col gap-2">
-                <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg"><span className="font-semibold"> {provider.country}</span> USA</p>
+                <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg"><span className="font-semibold">Country: </span>{provider.country}</p>
                 <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg"><span className="font-semibold">Yearly Revenue:</span> ${provider.yearlyRevenue}</p>
                 <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg"><span className="font-semibold">Market Share:</span> {provider.marketShare}%</p>
                 <p className="text-[#F7F3E3] border border-[#2c2c2c] bg-[#171717] rounded-md p-2 shadow-lg"><span className="font-semibold">Renewable Energy:</span> {provider.renewablePercentage}%</p>

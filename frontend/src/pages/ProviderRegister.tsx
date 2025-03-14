@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 const ProviderRegister = ({}) => {
   const { login } = useAuth();
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", password: "", confirmPassword: ""  });
   const navigate = useNavigate();
   const { username, password } = formData;
 
@@ -17,6 +17,12 @@ const ProviderRegister = ({}) => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
     try {
         const res = await axios.post('http://localhost:5000/auth/register', {
             username,
@@ -30,8 +36,9 @@ const ProviderRegister = ({}) => {
 
         navigate("/");
     } catch (err) {
-        console.error(err);
-        toast.error('Failed to register, User already exists');
+        const errorMessage = (err as Error).message || "Failed to register, User already exists!";
+        console.error(errorMessage);
+        toast.error(errorMessage);
     }
   };
   
@@ -58,6 +65,15 @@ const ProviderRegister = ({}) => {
             onChange={onChange} 
             required 
             className="p-2 border rounded bg-[#2c2c2c] text-[#F7F3E3]"/>
+          <input 
+            type="password" 
+            placeholder="Confirm Password" 
+            name="confirmPassword" 
+            value={formData.confirmPassword} 
+            onChange={onChange} 
+            required 
+            className="p-2 border rounded bg-[#2c2c2c] text-[#F7F3E3]"
+          />
           <Button variant={"outline"} type="submit" className="w-full bg-[#F7F3E3] hover:bg-[#f7f4e8]">
               Register
           </Button>

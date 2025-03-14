@@ -18,8 +18,15 @@ const ProviderFormAdd = () => {
 
   const [colorTheme, setColorTheme] = useState<keyof typeof colorPresets>("red");
 
+  const navigate = useNavigate();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProvider({ ...provider, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+    
+    setProvider((prevProvider) => ({
+      ...prevProvider,
+      [name]: type === "number" ? Number(value) || 0 : value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,12 +50,11 @@ const ProviderFormAdd = () => {
       toast.success("Successfully added a provider!");
       navigate("/")
     } catch (err) {
-      console.error(err);
-      toast.error("Failed to add a provider, please try again later!")
+      const errorMessage = (err as Error).message || "Failed to add a provider, please try again later!";
+      console.error(errorMessage);
+      toast.error(errorMessage);
     }
   };
-
-  const navigate = useNavigate();
 
   return (
     <form onSubmit={handleSubmit} className="p-6 space-y-4">
