@@ -1,9 +1,9 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover" 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { Slider } from "./ui/slider";
+import { DualRangeSlider } from './ui/dual-range-slider';
 import { toast } from "react-toastify";
 
 interface FiltersProps {
@@ -26,10 +26,19 @@ const Filters = ({ onFilterChange, maxRevenue }: FiltersProps) => {
     const [filters, setFilters] = useState({
         name: "",
         country: "",
-        marketShare: [0],
-        renewableEnergy: [0],
-        revenue: [0],
+        marketShare: [0, 100],
+        renewableEnergy: [0, 100],
+        revenue: [0, maxRevenue || 100],
     });
+
+    useEffect(() => {
+        if (maxRevenue) {
+            setFilters((prev) => ({
+                ...prev,
+                revenue: [0, maxRevenue],
+            }));
+        }
+    }, [maxRevenue]);
 
     const updateFilters = (key: string, value: any) => {
         setFilters((prev) => {
@@ -57,9 +66,9 @@ const Filters = ({ onFilterChange, maxRevenue }: FiltersProps) => {
         const defaultFilters = {
             name: "",
             country: "",
-            marketShare: [0],
-            renewableEnergy: [0],
-            revenue: [0],
+            marketShare: [0, 100],
+            renewableEnergy: [0, 100],
+            revenue: [0, maxRevenue],
         };
         setFilters(defaultFilters);
         onFilterChange(defaultFilters);
@@ -122,21 +131,21 @@ const InputField = ({ label, value, onChange }: { label: string; value: string; 
     </div>
 );
 
-const SliderField = ({ label, value, onChange, min, max }: { label: string; value: number[]; onChange: (val: number[]) => void; min: number; max: number}) => (
+const SliderField = ({ label, value, onChange, min, max }: { label: string; value: number[]; onChange: (val: number[]) => void; min: number; max: number }) => (
     <div className="grid gap-1.5">
         <Label className="text-[#F7F3E3]">{label}</Label>
         <div className="flex items-center gap-2">
-            <p className="text-[#F7F3E3]">{value[0]}</p>
-            <Slider 
+            <DualRangeSlider 
                 value={value} 
                 onValueChange={onChange} 
                 min={min} 
                 max={max} 
-                step={1}  
+                step={1}
+                label={(val) => <span className="text-xs">{val}</span>}  
             />
-            <p className="text-[#F7F3E3]">{value[1]}</p>
         </div>
     </div>
 );
+
 
 export default Filters
