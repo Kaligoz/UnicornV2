@@ -59,3 +59,9 @@ pnpm run dev
 ```
 
 Visit http://localhost:5173/ to view the project.
+
+# Api Documentation
+
+To open api documentation make sure the app is up and running.
+
+Visit http://localhost:5000/api-docs/ to view the documentation.

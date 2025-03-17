@@ -4,7 +4,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 require("dotenv").config();
-const errorHandler = require("./errorhandler")
+const errorHandler = require("./errorhandler");
+const setupSwagger = require ("./swagger.js");
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(errorHandler);
+
+setupSwagger(app);
 
 const PORT = process.env.PORT || 5000;
 
